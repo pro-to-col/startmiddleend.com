@@ -1,0 +1,403 @@
+<!doctype html>
+<!--
+  Start Middle End: startmiddleend.com
+  Single self-contained page for GitHub Pages.
+  All copy lives in the <main> sections below and can be edited in place.
+  Colours are set once on :root (light) and again in the dark-mode block.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Start Middle End | Sage X3 data loads and integrations</title>
+<meta name="description" content="Sage X3 data loads, imports and Excel front ends, with every mapping rule proven against your own records before the full file goes in.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://startmiddleend.com/">
+<meta property="og:title" content="Start Middle End">
+<meta property="og:description" content="Sage X3 data loads, imports and Excel front ends, proven against your own records before the full file goes in.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%231D2B44'/%3E%3Cpath d='M9 8v16M16 8v16M23 8v16' stroke='%23EDF2E6' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #EDF2E6;
+    --paper-2: #F5F8F1;
+    --rule: #BCD0B3;
+    --rule-strong: #8FAE86;
+    --ink: #1D2B44;
+    --ink-hover: #2E4166;
+    --muted: #4A5A6E;
+    --red: #A8322D;
+    --line: 1.75rem;
+    --pad: clamp(1rem, 2vw, 1.5rem);
+    color-scheme: light;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #132320;
+      --paper-2: #182C28;
+      --rule: #2C463D;
+      --rule-strong: #46695B;
+      --ink: #E3EBDD;
+      --ink-hover: #F6F9F3;
+      --muted: #A7B7AB;
+      --red: #EE8A7F;
+      color-scheme: dark;
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { background: var(--paper); }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 1.0625rem;
+    line-height: var(--line);
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  .wrap {
+    width: min(66rem, 100% - 2 * clamp(1.25rem, 4vw, 3rem));
+    margin-inline: auto;
+  }
+  a { color: var(--ink); text-decoration-color: var(--rule-strong); text-underline-offset: 0.2em; }
+  a:hover { text-decoration-color: var(--ink); }
+  a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 2px; }
+
+  /* Masthead */
+  .masthead {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding-block: 1.25rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .wordmark {
+    font-weight: 800;
+    font-size: 1.125rem;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+  .masthead a:not(.wordmark) { font-weight: 500; }
+
+  /* Hero: the name is the ledger */
+  .hero { padding-top: clamp(3rem, 8vw, 6rem); }
+  .hero h1 {
+    margin: 0 0 clamp(2.5rem, 6vw, 4.5rem);
+    max-width: 21ch;
+    font-size: clamp(1.875rem, 4.4vw, 3.4rem);
+    line-height: 1.08;
+    font-weight: 700;
+    letter-spacing: -0.022em;
+  }
+  .ledger {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--rule-strong);
+    border-bottom: 1px solid var(--rule-strong);
+  }
+  .ledger li {
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--pad) 1.75rem;
+    border-left: 1px solid var(--rule);
+  }
+  .ledger li:first-child { border-left: 0; padding-left: 0; }
+  .ledger li:last-child { padding-right: 0; }
+  .ledger h2 {
+    margin: 0 calc(var(--pad) * -1);
+    padding: 0.45em var(--pad) 0.28em;
+    font-size: clamp(2.5rem, 6.4vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.035em;
+    border-bottom: 4px double var(--rule-strong);
+  }
+  .ledger li:first-child h2 { margin-left: 0; padding-left: 0; }
+  .ledger li:last-child h2 { margin-right: 0; padding-right: 0; }
+  .ledger p {
+    flex: 1;
+    margin: 1rem 0 0;
+    max-width: 44ch;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent calc(var(--line) - 1px),
+      var(--rule) calc(var(--line) - 1px),
+      var(--rule) var(--line)
+    );
+  }
+
+  /* Sections */
+  .section {
+    padding-block: clamp(3.5rem, 8vw, 6rem);
+    border-top: 1px solid var(--rule);
+  }
+  .hero + .section { border-top: 0; }
+  .section-title {
+    margin: 0 0 1rem;
+    font-size: clamp(1.5rem, 2.6vw, 2.05rem);
+    line-height: 1.15;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+  .section p { margin: 0 0 1rem; max-width: 62ch; }
+
+  /* Mapping sheet */
+  .sheet {
+    margin-top: 2rem;
+    overflow-x: auto;
+    background: var(--paper-2);
+    border: 1px solid var(--rule-strong);
+  }
+  .sheet table {
+    width: 100%;
+    min-width: 44rem;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+  .sheet caption {
+    caption-side: top;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    color: var(--muted);
+    font-size: 0.9375rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .sheet th {
+    text-align: left;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    padding: 0.6rem 1rem;
+    white-space: nowrap;
+    border-bottom: 4px double var(--rule-strong);
+  }
+  .sheet td {
+    padding: 0.7rem 1rem;
+    vertical-align: top;
+    border-bottom: 1px solid var(--rule);
+  }
+  .sheet th + th, .sheet td + td { border-left: 1px solid var(--rule); }
+  .sheet tbody tr:last-child td { border-bottom: 0; }
+  .num { text-align: right; white-space: nowrap; }
+  .sheet th.num { text-align: right; }
+  .code { color: var(--muted); font-size: 0.875em; letter-spacing: 0.02em; margin-left: 0.35em; }
+  .ok { font-weight: 600; }
+  .open { color: var(--red); font-weight: 700; }
+  .exc { display: block; color: var(--red); font-weight: 600; font-size: 0.9375rem; }
+
+  /* The one moment: rules get signed off, one row at a time */
+  .status span { display: inline-block; animation: stamp 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+  .sheet tbody tr:nth-child(1) .status span { animation-delay: 0.5s; }
+  .sheet tbody tr:nth-child(2) .status span { animation-delay: 0.85s; }
+  .sheet tbody tr:nth-child(3) .status span { animation-delay: 1.2s; }
+  .sheet tbody tr:nth-child(4) .status span { animation-delay: 1.65s; }
+  @keyframes stamp {
+    from { opacity: 0; transform: scale(1.3); }
+    to { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .status span { animation: none; }
+  }
+
+  /* What we build */
+  .work dl {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 clamp(1.5rem, 4vw, 3rem);
+    margin: 1.5rem 0 0;
+  }
+  .work dl > div { border-top: 1px solid var(--rule-strong); padding: 1rem 0 1.5rem; }
+  .work dt { font-weight: 700; margin-bottom: 0.25rem; }
+  .work dd { margin: 0; max-width: 52ch; }
+
+  /* Contact */
+  .button {
+    display: inline-block;
+    margin-top: 0.75rem;
+    padding: 0.85rem 1.4rem;
+    background: var(--ink);
+    color: var(--paper);
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 2px;
+  }
+  .button:hover { background: var(--ink-hover); }
+  .contact .address { margin-top: 1.25rem; color: var(--muted); font-size: 0.9375rem; }
+
+  .footer {
+    padding-block: 2rem 3rem;
+    border-top: 1px solid var(--rule);
+    color: var(--muted);
+    font-size: 0.875rem;
+    line-height: 1.55;
+  }
+  .footer p { margin: 0 0 0.35rem; max-width: 70ch; }
+
+  /* Narrow screens */
+  @media (max-width: 760px) {
+    .ledger { grid-template-columns: 1fr; border-bottom: 0; }
+    .ledger li, .ledger li:first-child, .ledger li:last-child { border-left: 0; padding: 0 0 2rem; }
+    .ledger h2, .ledger li:first-child h2, .ledger li:last-child h2 {
+      margin: 0;
+      padding: 0.5em 0 0.25em;
+      font-size: clamp(2.75rem, 15vw, 4.25rem);
+    }
+    .ledger li + li { border-top: 1px solid var(--rule-strong); }
+    .ledger p { max-width: none; }
+    .work dl { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    .sheet { overflow: visible; }
+    .sheet table { min-width: 0; }
+    .sheet caption { display: block; }
+    .sheet thead {
+      position: absolute; width: 1px; height: 1px;
+      overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+    }
+    .sheet table, .sheet tbody, .sheet tr, .sheet td { display: block; }
+    .sheet tr { padding: 0.5rem 0; border-bottom: 1px solid var(--rule-strong); }
+    .sheet tbody tr:last-child { border-bottom: 0; }
+    .sheet td, .sheet td + td, .sheet tbody tr:last-child td {
+      position: relative;
+      padding: 0.3rem 1rem 0.3rem 9.5rem;
+      border: 0;
+    }
+    .sheet td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 1rem;
+      width: 8rem;
+      color: var(--muted);
+      font-size: 0.875rem;
+    }
+    .num { text-align: left; white-space: normal; }
+  }
+</style>
+</head>
+<body>
+
+<header class="wrap masthead">
+  <a class="wordmark" href="/">Start Middle End</a>
+  <a href="mailto:brandon@startmiddleend.com?subject=Sage%20X3%20data%20load">Email Brandon</a>
+</header>
+
+<main>
+  <section class="wrap hero">
+    <h1>Data into Sage X3, proven before the full file goes in.</h1>
+    <ol class="ledger">
+      <li>
+        <h2>Start</h2>
+        <p>Work out the rules from your own data. We compare your source file with records already in X3, so every mapping rule comes with a match rate, and anything that doesn’t hold up gets listed instead of guessed.</p>
+      </li>
+      <li>
+        <h2>Middle</h2>
+        <p>Build what your team will actually use: import templates, Excel workbooks with the validation built in, and the middleware that moves the file into X3 without anyone converting it by hand.</p>
+      </li>
+      <li>
+        <h2>End</h2>
+        <p>Load it in small steps and hand it over. A ten-record canary first, then the full file, then a reconciliation back to the source. You keep the runbook.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="wrap section evidence" aria-labelledby="evidence-title">
+    <h2 id="evidence-title" class="section-title">A mapping sheet before anything gets built</h2>
+    <p>Each rule is tested against records that already exist in Sage X3. It counts as confirmed only when it reproduces every one of them. When it doesn’t, you see the exceptions, and the open questions go to a person instead of a default.</p>
+    <div class="sheet">
+      <table>
+        <caption>Example from a product load</caption>
+        <thead>
+          <tr>
+            <th scope="col">Target field</th>
+            <th scope="col">Source</th>
+            <th scope="col">Rule</th>
+            <th scope="col">Status</th>
+            <th scope="col" class="num">Matched records</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Target field">Product<span class="code">ITMREF</span></td>
+            <td data-label="Source">Item No.</td>
+            <td data-label="Rule">As is, upper case</td>
+            <td data-label="Status" class="status"><span class="ok">✓ Confirmed</span></td>
+            <td data-label="Matched records" class="num">4,812 of 4,812</td>
+          </tr>
+          <tr>
+            <td data-label="Target field">Description<span class="code">ITMDES1</span></td>
+            <td data-label="Source">Description</td>
+            <td data-label="Rule">As is</td>
+            <td data-label="Status" class="status"><span class="ok">✓ Confirmed</span></td>
+            <td data-label="Matched records" class="num">4,812 of 4,812</td>
+          </tr>
+          <tr>
+            <td data-label="Target field">Category<span class="code">TCLCOD</span></td>
+            <td data-label="Source">Class</td>
+            <td data-label="Rule">Lookup, 14 codes</td>
+            <td data-label="Status" class="status"><span class="ok">✓ Confirmed</span></td>
+            <td data-label="Matched records" class="num">4,812 of 4,812</td>
+          </tr>
+          <tr>
+            <td data-label="Target field">Stock unit<span class="code">STU</span></td>
+            <td data-label="Source">UOM</td>
+            <td data-label="Rule">EA becomes UN</td>
+            <td data-label="Status" class="status"><span class="open">Open</span></td>
+            <td data-label="Matched records" class="num">4,797 of 4,812<span class="exc">15 exceptions</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="wrap section work" aria-labelledby="work-title">
+    <h2 id="work-title" class="section-title">What we build</h2>
+    <dl>
+      <div>
+        <dt>Migrations</dt>
+        <dd>Customers, suppliers, products, open balances and fixed assets, loaded in the order X3 needs them.</dd>
+      </div>
+      <div>
+        <dt>Recurring imports</dt>
+        <dd>Import templates and silent imports that run on a schedule or from a button, with rejected rows sent back to whoever submitted them.</dd>
+      </div>
+      <div>
+        <dt>Excel front ends</dt>
+        <dd>Workbooks that check codes, dates and required fields before anything leaves the user’s desk, refreshed from X3 when they open.</dd>
+      </div>
+      <div>
+        <dt>Integrations</dt>
+        <dd>Web service connections between X3 and the systems around it, for sending data in and reading it back out.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section class="wrap section about" aria-labelledby="about-title">
+    <h2 id="about-title" class="section-title">Who you’ll work with</h2>
+    <p>Start Middle End is Brandon Gabert, a Sage X3 consultant who came up through finance. He’s lived an implementation from every seat in the company, from the shipping desk to the CFO’s office, so the data gets built around the people who use it.</p>
+  </section>
+
+  <section class="wrap section contact" aria-labelledby="contact-title">
+    <h2 id="contact-title" class="section-title">Have a load coming up?</h2>
+    <p>Send a note with what you’re moving into Sage X3 and roughly how many records. You’ll get a straight answer on the approach and the effort.</p>
+    <a class="button" href="mailto:brandon@startmiddleend.com?subject=Sage%20X3%20data%20load">Email Brandon</a>
+    <p class="address">brandon@startmiddleend.com</p>
+  </section>
+</main>
+
+<footer class="wrap footer">
+  <p>© 2026 Start Middle End</p>
+  <p>Sage and Sage X3 are trademarks of The Sage Group plc. Start Middle End is independent and not affiliated with Sage.</p>
+</footer>
+
+</body>
+</html>
